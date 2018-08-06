@@ -10,6 +10,29 @@ import random
 #           Spiking_time_space  -> shape:(100 dimensional 2d-array)
 #           
 #
+#  Global parameters:
+
+#  Number of cells 
+NUM_PN_CELLS = 100
+NUM_KC_CELLS = 2000
+
+#  Connection configuration
+WEIGHT_PN_KC = 5
+DELAY_PN_KC  = 1.0
+NEURON_PARAMS = {
+                 'cm'        : 0.25,
+                 'i_offset'  : 0.0,
+                 'tau_m'     : 20.0,
+                 'tau_refrac': 0.0,
+                 'tau_syn_E' : 10.0,
+                 'tau_syn_I' : 10.0,
+                 'v_reset'   : -70.0,
+                 'v_rest'    : -65.0,
+                 'v_thresh'  : -64.0
+                }
+
+#  Other stuff
+TIME_SLOT = 100
 
 def setupLayer_PN(time_space):
     '''
@@ -21,7 +44,6 @@ def setupLayer_PN(time_space):
 
      PN was used as input layer
     '''
-    NUM_PN_CELLS = 100
     input_population = spynnaker.Population(NUM_PN_CELLS,
                                             spynnaker.SpikeSourceArray(spike_times=time_space),
                                             label='PN_population')
@@ -41,18 +63,6 @@ def setupLayer_KC():
                  Each core contains MAX 256 neurons.
                  Hence 2000 KC_neurons will spreads to around ~10 cores
     '''
-    NUM_KC_CELLS  = 2000
-    NEURON_PARAMS = {
-                     'cm'        : 0.25,
-                     'i_offset'  : 0.0,
-                     'tau_m'     : 20.0,
-                     'tau_refrac': 0.0,
-                     'tau_syn_E' : 10.0,
-                     'tau_syn_I' : 10.0,
-                     'v_reset'   : -70.0,
-                     'v_rest'    : -65.0,
-                     'v_thresh'  : -64.0
-                    }
     kc_population = spynnaker.Population(NUM_KC_CELLS,
                                          spynnaker.IF_curr_exp,
                                          NEURON_PARAMS,
@@ -60,11 +70,6 @@ def setupLayer_KC():
     return kc_population
 
 def setupProjection_PN_KC(pn_population,kc_population):
-
-    WEIGHT_PN_KC = 5
-    DELAY_PN_KC  = 1.0
-    NUM_KC_CELLS = 2000
-    NUM_PN_CELLS = 100
 
     connectionList = list()                                        # Connection list between PN and KC
     for each_kc_cell in xrange(NUM_KC_CELLS):
@@ -83,7 +88,9 @@ def setupProjection_PN_KC(pn_population,kc_population):
     return pnkcProjection
 
 
-def readData():
+def readData():     # This function may be abandoned since 
+                    # data preparation will be integrate in
+                    # file to avoid file reading overhead
     spikeLists= []
     c = open("InputSpikingTime.csv", "rb")
     read = csv.reader(c)
@@ -95,8 +102,7 @@ def readData():
 
 def retrieve_data(spikeData_original):
 
-    TIME_SLOT = 100
-    TOTAL_TIME= 1000000
+    TOTAL_TIME= NUM_PN_CELLS*TIME_SLOT
     TIMER     = 0
     ROUND     = 0
     DIMENSION = len(spikeData_original)
@@ -116,7 +122,10 @@ def retrieve_data(spikeData_original):
         ROUND  += 1
         simplified[ROUND, :][indices] = original[ROUND, :][indices]
 
-def save_data(src):
+
+def save_data(src):   # This function may be abandoned since all 
+                      # reading process maybe integred together
+                      # to avoid file reading time cost
     LEN     = 2000
     csvFile = open("src.csv", "w")
     writer  = csv.writer(csvFile)
