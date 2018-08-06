@@ -1,11 +1,21 @@
+# 
+# @Function: This function generate the response, the rate only.
+#            Spiking time will be generated in the next step
 #
-# @Params: vr_space      -> VR set must be prepared
-#          feature_space -> Multiple input points
+# @Return: response_space : shape=(vr_count,graph_count)
+#  Hence this function return the reaction of each vr to all graphs
 #
+
 vr_space_dimension = 100
 data_dimension = 784
-def generate_vr_response(vr_space,feature_space){
+mnistDir = "./data/mnist/mnist_test.txt"
+vrDir = "./GNG-optimum-VR-set.csv"
+
+def generate_vr_response(){
     
+    vr_space = np.loadtxt(vr_dir,delimiter=',')
+    feature_space = np.loadtxt(srcDir,delimiter=',')
+
     vr_space_length = len(vr_space)
     feature_space_length = len(feature_space)
     distance_space = np.zeros((vr_space_length,feature_space_length))
@@ -24,5 +34,5 @@ def generate_vr_response(vr_space,feature_space){
             response_vr_graph = np.exp(-((5 * distance_space[vr_index][graph_index])/average_distance)**0.7)
             response_space[vr_index][graph_index] = response_vr_graph
 
-    return feature_space
+    return response_space
 }

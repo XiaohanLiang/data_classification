@@ -34,6 +34,7 @@ shuffledObs = mdp.numx.take(obs,mdp.numx_rand.permutation(numRows), axis=0)
 #specifying 0 implies using the GNG algortihm to obtain an optimal number of VRs (nodes)
 destPath  = "./" + "GNG-optimum-VR-set.csv"
 if numVR==0:
+    #print("123")
     if os.path.isfile(destPath):
         print('GNG set already generated for this recording set')
         os.system("mv "+destPath)

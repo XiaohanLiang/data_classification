@@ -1,10 +1,14 @@
+#                            
+# @Function: This function was used to generate the spiking time of each neuron
+#            which will be used as the input of PN layer in the next step.
 #
 # @Params: response_space -> response of vr to graph set must be given
 #                            shape = (vr_count,graph_count)
-#          epoch          -> Expose time used to train vr set must be given here
-#
+# @Return: spiking_space  -> shape[0] = vr_count
+#                            Each row represent the spiking time of each neuron
+#                            
 
-def generate_spiking_time(response_space,epoch){
+def generate_spiking_time(response_space,epoch=100){
     vr_count = len(response_space)
     graph_count = len(response_space[0])
     spiking_space = [[] for i in xrange(vr_count)]
