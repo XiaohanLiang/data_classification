@@ -4,6 +4,9 @@ import pyNN.spiNNaker as spynnaker
 import csv
 import random
 
+from generate_vr_response import generate_vr_response
+from generate_spiking_time import generate_spiking_time
+
 #
 #  SpiNN-3 board configuration
 #  @Before: Epochs              -> set to 100ms   
@@ -89,7 +92,7 @@ def setupProjection_PN_KC(pn_population,kc_population):
     return pnkcProjection
 
 
-def readData():     # This function may be abandoned since 
+def readData():     # This function may be discarded since 
                     # data preparation will be integrate in
                     # file to avoid file reading overhead
     spikeLists= []
@@ -124,7 +127,7 @@ def retrieve_data(spikeData_original):
  
     return [original,simplified]
 
-def save_data(src):   # This function may be abandoned since all 
+def save_data(src):   # This function may be discarded since all 
                       # reading process maybe integred together
                       # to avoid file reading time cost
     LEN     = 2000
@@ -142,10 +145,11 @@ def mapping_process():
     SIM_TIME = TIME_SLOT*DATA_AMOUNT ##
     ###################################
 
+    response_space = generate_vr_response()
+    spiking_space  = generate_spiking_time(response_space) 
+
     spynnaker.setup(timestep=1)
     spynnaker.set_number_of_neurons_per_core(spynnaker.IF_curr_exp, 50)
-    # time_space     = readData()
-    # Manage to obtain data correctly
 
     pn_population  = setupLayer_PN(time_space)
     kc_population  = setupLayer_KC()

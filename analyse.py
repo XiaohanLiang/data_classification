@@ -5,10 +5,15 @@
 #            2. Deploy 5% inhibition method 
 #            3. Calculate the Euclidean-distance to find 5 nearest neighbor
 #
+# @Mention: This version will not have verification step, 
+#           we just list the 5-nearest neighbor directly
+#
+
 import numpy as np
 import csv
 import heapq
 import random
+
 EXPOSE_TIME         = 50
 TOTAL_TIME          = 2500
 KC_CELL_COUNT       = 2000
