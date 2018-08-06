@@ -32,7 +32,8 @@ NEURON_PARAMS = {
                 }
 
 #  Other stuff
-TIME_SLOT = 100
+TIME_SLOT   = 100
+DATA_AMOUNT = 100
 
 def setupLayer_PN(time_space):
     '''
@@ -101,27 +102,27 @@ def readData():     # This function may be abandoned since
 
 
 def retrieve_data(spikeData_original):
+    '''
+        This function obtain the original KC reaction to each graph
+        @Return_val[0] : original   -> DATA_AMOUNT * KC_REACTIONS_TO_THIS_GRAPH
+        @Return_val[1] : simplified -> DATA_AMOUNT * SIMPLIFIED_KC_REACTIONS
+    '''
+    original  = np.zeros((DATA_AMOUNT,NUM_KC_CELLS)) 
+    simplified= np.zeros((DATA_AMOUNT,NUM_KC_CELLS)) 
 
-    TOTAL_TIME= NUM_PN_CELLS*TIME_SLOT
-    TIMER     = 0
-    ROUND     = 0
-    DIMENSION = len(spikeData_original)
-    original  = [[] for i in range(DIMENSION+1)]
-    simplified= []
-
-    while(TIMER<TOTAL_TIME):
-        temp_array = []
-        for neuron_index in range(DIMENSION):
-            temp = np.array(spikeData_original[neuron_index])
-            count= ((temp>TIMER)&(temp<TIMER+TIME_SLOT)).sum()
+    for graph_index in xrange(DATA_AMOUNT):
+        begin_time = graph_index*TIME_SLOT
+        end_time  = begin_time+TIME_SLOT
+        for neuron_index in xrange(NUM_KC_CELLS):
+            graph_reaction = np.array(spikeData_original[neuron_index])
+            count= ((graph_reaction>begin_time)and(graph_reaction<end_time)).sum()
             rate = float(count)/(float(TIME_SLOT)/1000)
-            temp_array.append(rate)
-        # -------------------------------------------------tmp数组表示这一次的原始数据
-        original.append(temp_array)
-        indices = np.argpartition(original[ROUND], 100)[:100]
-        ROUND  += 1
-        simplified[ROUND, :][indices] = original[ROUND, :][indices]
+            original[graph_index][neuron_index] = rate
 
+        indices = np.argpartition(original[graph_index], 100)[:100]
+        simplified[graph_index, :][indices] = original[graph_index, :][indices]
+ 
+    return [original,simplified]
 
 def save_data(src):   # This function may be abandoned since all 
                       # reading process maybe integred together
