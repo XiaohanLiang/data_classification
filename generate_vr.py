@@ -14,7 +14,7 @@ srcDir = "./data/mnist/"
 srcFilename = "mnist100.txt"
 destFilename = "InputSpikingTime"
 
-numVR  = 100
+numVR  = 50
 epochs = 100
 # if numArgumentsProvided > 4:
 #     numVR =  int(sys.argv[4])

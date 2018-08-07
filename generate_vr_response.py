@@ -8,7 +8,7 @@
 
 import numpy as np
 
-vr_space_dimension = 100
+vr_space_dimension = 50
 data_dimension = 784
 mnistDir = "./data/mnist/mnist_test.txt"
 vrDir = "./GNG-optimum-VR-set.csv"

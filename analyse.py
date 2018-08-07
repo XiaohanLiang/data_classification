@@ -35,10 +35,11 @@ def get_count(spiking_space):
         end_time   = begin_time+TIME_SLOT
         for neuron_index in xrange(KC_CELL_AMOUNT): 
             spiking_record  = np.array(spiking_space[neuron_index])
-            count = ((spiking_record>begin_time) and (spiking_record<end_time)).sum()
+            count = len([element for element in spiking_record if element>begin_time and element<end_time])
             spiking_count[graph_index][graph_index] = count
         
     simplified   =  np.zeros((DATA_AMOUNT,KC_CELL_AMOUNT))
+        
     for graph_index in xrange(DATA_AMOUNT):
         indices = np.argpartition(spiking_count[graph_index], -HASH_LENGTH)[-HASH_LENGTH:]
         simplified[graph_index][indices] = spiking_count[indices]
@@ -65,6 +66,7 @@ def get_nearest_neighbor(simplified):
             distance_list[graph_a][graph_b] = (distance,graph_b)
         
         NN_list[distance_a]  =  heapq.nsmallest(NN_LIST_LENGTH,distance_list[graph_a])
-        NN_list[distance_a]  =  set([vals[1] for vals in NN_list[distance_a])
-
+        for NN_index in NN_LIST_LENGTH:
+            NN_list[distance_a][NN_index] = NN_list[distance_a][NN_index][1]
+            
     return NN_list
