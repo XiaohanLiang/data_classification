@@ -3,9 +3,5 @@
 # Here I use it to test csv reading
 #
 import numpy as np
-a = [1,1,1]
-a = np.array(a)
-b = [2,2,2]
-b = np.array(b)
-c = np.linalg.norm((a-b),ord=2)
-print(c)
+a = np.zeros((10,10))
+np.savetxt("./test.txt",a,delimiter=',',newline='\n')

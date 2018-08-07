@@ -150,7 +150,7 @@ def mapping_process():
     spiking_space  = generate_spiking_time(response_space) 
 
     spynnaker.setup(timestep=1)
-    spynnaker.set_number_of_neurons_per_core(spynnaker.IF_curr_exp, 50)
+    spynnaker.set_number_of_neurons_per_core(spynnaker.IF_curr_exp, 250)
 
     pn_population  = setupLayer_PN(spiking_space)
     kc_population  = setupLayer_KC()
@@ -164,4 +164,5 @@ def mapping_process():
     spynnaker.end()
     return spikeData_original
 
-mapping_process()
+ans = mapping_process()
+np.savetxt("./ans.txt",ans,fmt='%s',delimiter=',',newline='\n')
