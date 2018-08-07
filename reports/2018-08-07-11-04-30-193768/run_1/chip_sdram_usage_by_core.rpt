@@ -1,0 +1,52 @@
+        Memory Usage by Core
+        ====================
+
+Generated: Tue Aug  7 11:04:30 2018 for target machine 'virtual'
+
+SDRAM reqs for core (1,0,13) is 130 KB
+SDRAM reqs for core (0,0,7) is 129 KB
+SDRAM reqs for core (1,1,10) is 129 KB
+SDRAM reqs for core (0,0,5) is 129 KB
+SDRAM reqs for core (1,0,2) is 129 KB
+SDRAM reqs for core (0,0,6) is 128 KB
+SDRAM reqs for core (0,0,14) is 129 KB
+SDRAM reqs for core (0,0,8) is 129 KB
+SDRAM reqs for core (0,0,12) is 128 KB
+SDRAM reqs for core (1,0,5) is 129 KB
+SDRAM reqs for core (1,0,6) is 129 KB
+SDRAM reqs for core (0,0,10) is 129 KB
+SDRAM reqs for core (1,0,12) is 129 KB
+SDRAM reqs for core (1,1,13) is 130 KB
+SDRAM reqs for core (1,0,8) is 129 KB
+SDRAM reqs for core (1,1,9) is 129 KB
+SDRAM reqs for core (1,0,11) is 130 KB
+SDRAM reqs for core (1,1,1) is 130 KB
+SDRAM reqs for core (1,1,3) is 128 KB
+SDRAM reqs for core (1,0,10) is 129 KB
+SDRAM reqs for core (1,1,7) is 130 KB
+SDRAM reqs for core (1,1,8) is 130 KB
+SDRAM reqs for core (1,1,12) is 130 KB
+SDRAM reqs for core (0,0,2) is 129 KB
+SDRAM reqs for core (1,1,11) is 129 KB
+SDRAM reqs for core (0,0,3) is 129 KB
+SDRAM reqs for core (0,0,1) is 129 KB
+SDRAM reqs for core (1,0,1) is 128 KB
+SDRAM reqs for core (1,0,3) is 128 KB
+SDRAM reqs for core (0,0,13) is 128 KB
+SDRAM reqs for core (1,1,5) is 129 KB
+SDRAM reqs for core (1,1,4) is 128 KB
+SDRAM reqs for core (1,0,4) is 129 KB
+SDRAM reqs for core (1,0,14) is 129 KB
+SDRAM reqs for core (1,1,2) is 129 KB
+SDRAM reqs for core (1,0,7) is 128 KB
+SDRAM reqs for core (1,0,9) is 129 KB
+SDRAM reqs for core (0,0,4) is 129 KB
+SDRAM reqs for core (0,0,9) is 128 KB
+SDRAM reqs for core (0,0,11) is 129 KB
+SDRAM reqs for core (1,1,6) is 1024 KB
+**** Chip: (0, 0) has total memory usage of 1808 KB (1851427.2 bytes) out of a max of 119808 KB (122683392 bytes)
+
+**** Chip: (1, 0) has total memory usage of 1810 KB (1853627.2 bytes) out of a max of 119808 KB (122683392 bytes)
+
+**** Chip: (1, 1) has total memory usage of 2578 KB (2640541.6 bytes) out of a max of 119808 KB (122683392 bytes)
+

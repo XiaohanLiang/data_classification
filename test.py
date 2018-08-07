@@ -3,9 +3,9 @@
 # Here I use it to test csv reading
 #
 import numpy as np
-dir_to_csv = "./GNG-optimum-VR-set.csv" 
-def reader():
-    obj = np.loadtxt(dir_to_csv,delimiter=',')
-    print(obj)
-
-reader()
+a = [1,1,1]
+a = np.array(a)
+b = [2,2,2]
+b = np.array(b)
+c = np.linalg.norm((a-b),ord=2)
+print(c)

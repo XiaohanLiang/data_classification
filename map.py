@@ -48,6 +48,7 @@ def setupLayer_PN(time_space):
 
      PN was used as input layer
     '''
+    print(len(time_space))
     input_population = spynnaker.Population(NUM_PN_CELLS,
                                             spynnaker.SpikeSourceArray(spike_times=time_space),
                                             label='PN_population')
@@ -151,7 +152,7 @@ def mapping_process():
     spynnaker.setup(timestep=1)
     spynnaker.set_number_of_neurons_per_core(spynnaker.IF_curr_exp, 50)
 
-    pn_population  = setupLayer_PN(time_space)
+    pn_population  = setupLayer_PN(spiking_space)
     kc_population  = setupLayer_KC()
     kc_population.record(["spikes"])
 
@@ -162,3 +163,5 @@ def mapping_process():
     spikeData_original= neo.segments[0].spiketrains
     spynnaker.end()
     return spikeData_original
+
+mapping_process()
