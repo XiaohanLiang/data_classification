@@ -178,5 +178,5 @@ def analysing_process(spikeData_original):
 if(__name__=='__main__'):
 
     spikeData_original = mapping_process()
-    save_as_pickle(spikeData_original,"spike_data_original")
-#    NN_list = analysing_process(spikeData_original)
+    NN_list = analysing_process(spikeData_original)
+    print(NN_list)

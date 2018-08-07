@@ -1,4 +1,3 @@
-# -*- coding:utf-8 -*-
 #
 # @Function: This function was used to analyse the resulting data
 #            1. Transfer spiking time into spiking rate
@@ -42,7 +41,7 @@ def get_count(spiking_space):
         
     for graph_index in xrange(DATA_AMOUNT):
         indices = np.argpartition(spiking_count[graph_index], -HASH_LENGTH)[-HASH_LENGTH:]
-        simplified[graph_index][indices] = spiking_count[indices]
+        simplified[graph_index][indices] = spiking_count[graph_index][indices]
 
     return simplified
 
@@ -56,17 +55,16 @@ def get_count(spiking_space):
 #
 def get_nearest_neighbor(simplified):
 
-    distance_list = np.zeros((DATA_AMOUNT,DATA_AMOUNT))
-    NN_list = np.zeros((DATA_AMOUNT,NN_LIST_LENGTH))
+    distance_list = [[] for i in xrange(DATA_AMOUNT)]
+    NN_list = [[] for i in xrange(DATA_AMOUNT)]
     
     for graph_a in xrange(DATA_AMOUNT):
         
         for graph_b in xrange(DATA_AMOUNT):
             distance = np.linalg.norm((simplified[graph_a]-simplified[graph_b]),ord=2)
-            distance_list[graph_a][graph_b] = (distance,graph_b)
+            distance_list[graph_a].append((distance,graph_b))
         
-        NN_list[distance_a]  =  heapq.nsmallest(NN_LIST_LENGTH,distance_list[graph_a])
-        for NN_index in NN_LIST_LENGTH:
-            NN_list[distance_a][NN_index] = NN_list[distance_a][NN_index][1]
-            
+        NN_list[graph_a]  =  heapq.nsmallest(NN_LIST_LENGTH,distance_list[graph_a])
+        NN_list[graph_a]  = np.array([vals[1] for vals in NN_list[graph_a]])
+    
     return NN_list
