@@ -1,6 +1,6 @@
 # This script contains helper functions to help debugging
 import pickle
-picDir = "./pickle_file/"
+picDir = "pickle_file/"
 
 #
 # @Fucntion: This function helps to save pickle such that
@@ -10,7 +10,7 @@ picDir = "./pickle_file/"
 #          file_name -> specify the file_name
 #
 def save_as_pickle(data,file_name):
-    with open(picDir+file_name+".p") as file:
+    with open(picDir+file_name+".p",'wb') as file:
         pickle.dump(data,file)
 
 #
@@ -18,8 +18,8 @@ def save_as_pickle(data,file_name):
 #
 # @Params: specify the file_name you would like to read
 #
-def save_as_pickle(file_name):
-    with open(picDir+file_name+".p") as file:
+def read_from_pickle(file_name):
+    with open(picDir+file_name+".p",'r') as file:
         data = pickle.load(file)
     return data
 
