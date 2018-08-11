@@ -15,15 +15,15 @@ from bs4 import BeautifulSoup
 import re
 import nltk
 import time
+from data_extraction import twitter_text_extractor
 
 # Config
-MODEL_STORAGE = '../model_storage'
+MODEL_STORAGE = '../model_storage/model'
 feature_vector_dimension = 300
 minimum_word_considerate = 20
 concurrent_cpu_amount    = 2
 context_window           = 5
 down_sampling_parameter  = 1e-3
-
 
 #
 # @Function: This function is very useful since it will convert from a HTML link
@@ -35,10 +35,10 @@ down_sampling_parameter  = 1e-3
 # @Return:  Sentence array, contain many sentence in this array.
 #
 
-def news_to_sentences(news):
-    news_text = BeautifulSoup(news).get_text()
+def tweets_to_sentences(data):
+    data_text = BeautifulSoup(data).get_text()
     tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
-    raw_sentences = tokenizers.tokenize(news_text)
+    raw_sentences = tokenizer.tokenize(data_text)
     sentences = []
     for sent in raw_sentences:
         sentences.append(re.sub('[^a-zA-Z]', ' ', sent.lower().strip()).split())
@@ -47,13 +47,13 @@ def news_to_sentences(news):
 
 if(__name__=='__main__'):
     
-    news = fetch_20newsgroups(subset = all)
-    sentence_array = []
+    raw_twitter_text = twitter_text_extractor()
+    tweets_array = []
     
-    for one_news in news.data:
-        sentence.extend(news_to_sentences(one_news))
+    for tweet in raw_twitter_text:
+        tweets_array.extend(tweets_to_sentences(tweet))
 
-    model = word2vec.Word2vec(sentences,
+    model = word2vec.Word2Vec(tweets_array,
                               workers   = concurrent_cpu_amount,
                               size      = feature_vector_dimension,
                               min_count = minimum_word_considerate,
