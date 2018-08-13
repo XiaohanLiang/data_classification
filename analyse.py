@@ -9,13 +9,15 @@
 #
 
 import numpy as np
+from calculate_cosine_distance import *
 import heapq
 
-TIME_SLOT           = 100
-KC_CELL_AMOUNT      = 2000
-HASH_LENGTH         = 100
-DATA_AMOUNT         = 100
-NN_LIST_LENGTH      = 5
+params = eval(open("settings.txt").read())
+TIME_SLOT           = params['TIME_SLOT']
+KC_CELL_AMOUNT      = params['NUM_KC_CELLS']
+HASH_LENGTH         = params['HASH_LENGTH']
+DATA_AMOUNT         = params['DATA_AMOUNT']
+NN_LIST_LENGTH      = params['LIST_LENGTH']
 
 #
 # @Function: first_part -> transfer raw spiking time into spiking rate
@@ -33,15 +35,20 @@ def get_count(spiking_space):
         begin_time = graph_index*TIME_SLOT
         end_time   = begin_time+TIME_SLOT
         for neuron_index in xrange(KC_CELL_AMOUNT): 
-            spiking_record  = np.array(spiking_space[neuron_index])
+            #spiking_record  = np.array(spiking_space[neuron_index])
+            spiking_record  = spiking_space[neuron_index]
             count = len([element for element in spiking_record if element>begin_time and element<end_time])
-            spiking_count[graph_index][graph_index] = count
-        
+            spiking_count[graph_index][neuron_index] = count
+    
+    np.savetxt('./retrived_data/spiking_count.txt',spiking_count,fmt='%d',delimiter=',',newline='\n')
+
     simplified   =  np.zeros((DATA_AMOUNT,KC_CELL_AMOUNT))
         
     for graph_index in xrange(DATA_AMOUNT):
         indices = np.argpartition(spiking_count[graph_index], -HASH_LENGTH)[-HASH_LENGTH:]
         simplified[graph_index][indices] = spiking_count[graph_index][indices]
+
+    np.savetxt('./retrived_data/simplified_count.txt',simplified,fmt='%d',delimiter=',',newline='\n')
 
     return simplified
 
@@ -68,3 +75,4 @@ def get_nearest_neighbor(simplified):
         NN_list[graph_a]  = np.array([vals[1] for vals in NN_list[graph_a]])
     
     return NN_list
+

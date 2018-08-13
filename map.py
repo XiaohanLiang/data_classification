@@ -19,29 +19,14 @@ from helper_function import *
 #           
 #
 #  Global parameters:
-
-#  Number of cells 
-NUM_PN_CELLS = 50
-NUM_KC_CELLS = 2000
-
-#  Connection configuration
-WEIGHT_PN_KC = 5
-DELAY_PN_KC  = 1.0
-NEURON_PARAMS = {
-                 'cm'        : 0.25,
-                 'i_offset'  : 0.0,
-                 'tau_m'     : 20.0,
-                 'tau_refrac': 0.0,
-                 'tau_syn_E' : 10.0,
-                 'tau_syn_I' : 10.0,
-                 'v_reset'   : -70.0,
-                 'v_rest'    : -65.0,
-                 'v_thresh'  : -64.0
-                }
+params = eval(open("settings.txt").read())
+NUM_PN_CELLS = params['NUM_PN_CELLS']
+NUM_KC_CELLS = params['NUM_KC_CELLS']
 
 #  Other stuff
-TIME_SLOT   = 100
-DATA_AMOUNT = 100
+TIME_SLOT   = params['TIME_SLOT']
+DATA_AMOUNT = params['DATA_AMOUNT']
+SHOW0SAVE1  = params['SHOW0SAVE1']
 
 def setupLayer_PN(time_space):
     '''
@@ -53,7 +38,6 @@ def setupLayer_PN(time_space):
 
      PN was used as input layer
     '''
-    print(len(time_space))
     input_population = spynnaker.Population(NUM_PN_CELLS,
                                             spynnaker.SpikeSourceArray(spike_times=time_space),
                                             label='PN_population')
@@ -74,8 +58,7 @@ def setupLayer_KC():
                  Hence 2000 KC_neurons will spreads to around ~10 cores
     '''
     kc_population = spynnaker.Population(NUM_KC_CELLS,
-                                         spynnaker.IF_curr_exp,
-                                         NEURON_PARAMS,
+                                         spynnaker.IF_curr_exp(),
                                          label='KC_population')
     return kc_population
 
@@ -84,7 +67,7 @@ def setupProjection_PN_KC(pn_population,kc_population):
     connectionList = list()                                        # Connection list between PN and KC
     for each_kc_cell in xrange(NUM_KC_CELLS):
 
-        count          = 6
+        count         = 6 
         selectedCells = random.sample(xrange(NUM_PN_CELLS),count) 
 
         for each_pn_cell in selectedCells:
@@ -94,7 +77,7 @@ def setupProjection_PN_KC(pn_population,kc_population):
     pnkcProjection = spynnaker.Projection(pn_population,
                                           kc_population,
                                           spynnaker.FromListConnector(connectionList),
-                                          spynnaker.StaticSynapse(weight=WEIGHT_PN_KC, delay=DELAY_PN_KC))
+                                          spynnaker.StaticSynapse(weight=5, delay=1.0))
     return pnkcProjection
 
 
@@ -160,6 +143,7 @@ def mapping_process():
     twitter_text_vectors = sentence_to_vec()
     response_space       = generate_vr_response(twitter_text_vectors)
     spiking_space        = generate_spiking_time(response_space) 
+    np.savetxt("./retrived_data/input_time.txt",spiking_space,fmt='%s',delimiter=',',newline='\n')
 
     spynnaker.setup(timestep=1)
     spynnaker.set_number_of_neurons_per_core(spynnaker.IF_curr_exp, 250)
@@ -185,5 +169,9 @@ def analysing_process(spikeData_original):
 if(__name__=='__main__'):
 
     spikeData_original = mapping_process()
+    for index in xrange(len(spikeData_original)):
+        spikeData_original[index] = np.array(spikeData_original[index])
+        spikeData_original[index] = spikeData_original[index].tolist() 
+    np.savetxt("./retrived_data/spiking_time.txt",spikeData_original,fmt='%s',delimiter=',',newline='\n')
     NN_list = analysing_process(spikeData_original)
-    print(NN_list)
+    show_result(NN_list,SHOW0SAVE1)

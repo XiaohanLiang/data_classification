@@ -7,19 +7,16 @@ import numpy as np
 import sys
 import os.path
 from sentence_to_vec import *
+
 # ------------------------------------------------------------------------------------------------------
-numArgumentsProvided =  len(sys.argv)
 
 srcDir = "./data/mnist/"
 srcFilename = "mnist100.txt"
 destFilename = "InputSpikingTime"
+params = eval(open("settings.txt").read())
+numVR  = params['numVR']
+epochs = params['epochs']
 
-numVR  = 50
-epochs = 100
-# if numArgumentsProvided > 4:
-#     numVR =  int(sys.argv[4])
-# if numArgumentsProvided > 5:
-#     epochs =  int(sys.argv[5])
 # ------------------------------------------------------------------------------------------------------
 
 #load observation data
@@ -37,9 +34,7 @@ shuffledObs = mdp.numx.take(obs,mdp.numx_rand.permutation(numRows), axis=0)
 destPath  = "./" + "GNG-optimum-VR-set.csv"
 if numVR==0:
     if os.path.isfile(destPath):
-        print('GNG set already generated for this recording set')
         os.system("mv "+destPath)
-        print("*Previous item has already been replaced*")
 
     print('Running growing neural gas to SUGGEST OPTIMUM NUM VRs')
     gng = mdp.nodes.GrowingNeuralGasNode()
@@ -58,5 +53,4 @@ else:
     result  = gng.get_nodes_position()
     np.savetxt(destPath,result,delimiter=',',newline='\n')
     print ('VRs found:',result.shape[0])
-    #print(result)
 

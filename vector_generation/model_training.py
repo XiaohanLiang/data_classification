@@ -18,9 +18,10 @@ import time
 from data_extraction import twitter_text_extractor
 
 # Config
-MODEL_STORAGE = '../model_storage/model'
-feature_vector_dimension = 100
-minimum_word_considerate = 20
+params = eval(open("settings.txt").read())
+MODEL_STORAGE = params['model_saving_path']
+feature_vector_dimension = params['feature_vector_dimension']
+minimum_word_considerate = params['minimum_word_considerate']
 concurrent_cpu_amount    = 2
 context_window           = 5
 down_sampling_parameter  = 1e-3

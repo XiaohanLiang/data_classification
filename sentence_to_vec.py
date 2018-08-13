@@ -15,8 +15,9 @@ from bs4 import BeautifulSoup
 import numpy as np
 import re
 
-model = Word2Vec.load("./model_storage/model")
-file_name = "./twitter_test.txt"
+params = eval(open("settings.txt").read())
+model = Word2Vec.load(params['model_path'])
+file_name = params['twitter_path']
 
 def tweets_to_sentences(data):
     data_text = BeautifulSoup(data).get_text()
