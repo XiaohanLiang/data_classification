@@ -1,6 +1,9 @@
 # This script contains helper functions to help debugging
 import pickle
 import numpy as np
+import sys
+
+sys.dont_write_bytecode = True
 picDir = "pickle_file/"
 
 #

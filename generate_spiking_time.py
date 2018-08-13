@@ -9,6 +9,8 @@
 #                            
 # @Config: Full rate, when vr_response==1
 #          Set the spiking rate to be FULL_RATE Hz
+import sys
+sys.dont_write_bytecode = True
 params = eval(open("settings.txt").read())
 FULL_RATE = params['FULL_SPIKING_RATE']
 

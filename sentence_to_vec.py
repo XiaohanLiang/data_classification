@@ -14,7 +14,9 @@ from gensim.models import Word2Vec
 from bs4 import BeautifulSoup
 import numpy as np
 import re
+import sys
 
+sys.dont_write_bytecode = True
 params = eval(open("settings.txt").read())
 model = Word2Vec.load(params['model_path'])
 file_name = params['twitter_path']

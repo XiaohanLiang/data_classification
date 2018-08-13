@@ -7,6 +7,7 @@ import numpy as np
 import sys
 import os.path
 from sentence_to_vec import *
+sys.dont_write_bytecode = True
 
 # ------------------------------------------------------------------------------------------------------
 

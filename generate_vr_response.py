@@ -13,6 +13,8 @@
 
 import numpy as np
 from helper_function import print_stuff
+import sys
+sys.dont_write_bytecode = True
 
 mnistDir = "./data/mnist/mnist_test.txt"
 vrDir = "./GNG-optimum-VR-set.csv"

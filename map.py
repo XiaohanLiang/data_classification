@@ -11,6 +11,8 @@ from analyse import *
 
 # Testing module
 from helper_function import * 
+import sys
+sys.dont_write_bytecode = True
 
 #
 #  SpiNN-3 board configuration

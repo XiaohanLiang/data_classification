@@ -11,6 +11,8 @@
 import numpy as np
 from calculate_cosine_distance import *
 import heapq
+import sys
+sys.dont_write_bytecode = True
 
 params = eval(open("settings.txt").read())
 TIME_SLOT           = params['TIME_SLOT']
