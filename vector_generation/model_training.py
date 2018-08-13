@@ -19,7 +19,7 @@ from data_extraction import twitter_text_extractor
 
 # Config
 MODEL_STORAGE = '../model_storage/model'
-feature_vector_dimension = 300
+feature_vector_dimension = 100
 minimum_word_considerate = 20
 concurrent_cpu_amount    = 2
 context_window           = 5

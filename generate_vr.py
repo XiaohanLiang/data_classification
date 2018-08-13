@@ -6,7 +6,7 @@ import mdp
 import numpy as np
 import sys
 import os.path
-
+from sentence_to_vec import *
 # ------------------------------------------------------------------------------------------------------
 numArgumentsProvided =  len(sys.argv)
 
@@ -24,6 +24,8 @@ epochs = 100
 
 #load observation data
 obs = np.loadtxt(srcDir + '/' + srcFilename,delimiter=',')
+obs = sentence_to_vec()
+obs = np.array(obs)
 
 numRows = obs.shape[0]
 numFeatures = obs.shape[1]
@@ -56,6 +58,5 @@ else:
     result  = gng.get_nodes_position()
     np.savetxt(destPath,result,delimiter=',',newline='\n')
     print ('VRs found:',result.shape[0])
-    print(result)
     #print(result)
 

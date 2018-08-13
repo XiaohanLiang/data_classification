@@ -4,19 +4,26 @@
 #
 # @Return: response_space : shape=(vr_count,graph_count)
 #  Hence this function return the reaction of each vr to all graphs
-#
+# 
+# @Mention: You have to be careful when switching the deimension of data
+#           Since the virtual_receptions comes with its own location.
+#           Which means they has the dimension same as that of data 
+#           Used to train these data
+#   
 
 import numpy as np
+from helper_function import print_stuff
 
-vr_space_dimension = 50
-data_dimension = 784
 mnistDir = "./data/mnist/mnist_test.txt"
 vrDir = "./GNG-optimum-VR-set.csv"
 
-def generate_vr_response():
+def generate_vr_response(twitter_text_vectors):
     
     vr_space = np.loadtxt(vrDir,delimiter=',')
-    feature_space = np.loadtxt(mnistDir,delimiter=',')
+    feature_space = twitter_text_vectors
+
+    print_stuff(vr_space)
+    print_stuff(feature_space)
 
     vr_space_length = len(vr_space)
     feature_space_length = len(feature_space)

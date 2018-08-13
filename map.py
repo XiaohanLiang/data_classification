@@ -6,10 +6,11 @@ import random
 
 from generate_vr_response import generate_vr_response
 from generate_spiking_time import generate_spiking_time
+from sentence_to_vec import *
 from analyse import *
 
 # Testing module
-from debug_module import * 
+from helper_function import * 
 
 #
 #  SpiNN-3 board configuration
@@ -144,15 +145,21 @@ def save_data(src):   # This function may be discarded since all
         writer.writerow(src[neuron_index])
     csvFile.close()
 
+#
+# @Mentioning: Twitter was tranformed into vectors of 100-dimensional 
+#              and then transformed into Vr-response, which was 50-dimensional 
+#              dimension=50 was set in the "generate_vr.py"
+#
 
 def mapping_process():
 
     ###################################
     SIM_TIME = TIME_SLOT*DATA_AMOUNT ##
     ###################################
-
-    response_space = generate_vr_response()
-    spiking_space  = generate_spiking_time(response_space) 
+    
+    twitter_text_vectors = sentence_to_vec()
+    response_space       = generate_vr_response(twitter_text_vectors)
+    spiking_space        = generate_spiking_time(response_space) 
 
     spynnaker.setup(timestep=1)
     spynnaker.set_number_of_neurons_per_core(spynnaker.IF_curr_exp, 250)

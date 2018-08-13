@@ -16,7 +16,6 @@ import numpy as np
 import re
 
 model = Word2Vec.load("./model_storage/model")
-saveDir = "./vector_info.txt"
 file_name = "./twitter_test.txt"
 
 def tweets_to_sentences(data):
@@ -41,7 +40,8 @@ def split_text_file(file_name):
 #
 #
 
-def sentence_to_vec(sentence_array):
+def sentence_to_vec():
+    sentence_array = split_text_file(file_name)
     return_ans = []
     for sentence in sentence_array:
         sentence_vector = []
@@ -56,7 +56,3 @@ def sentence_to_vec(sentence_array):
         return_ans.append(ans)
     return return_ans
 
-if(__name__=='__main__'):
-    raw_data = split_text_file(file_name)
-    sentence_vec = sentence_to_vec(raw_data)
-    np.savetxt(saveDir,sentence_vec,delimiter=',')
