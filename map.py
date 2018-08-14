@@ -143,6 +143,8 @@ def mapping_process():
     ###################################
     
     twitter_text_vectors = sentence_to_vec()
+    orig = get_nearest_neighbor(twitter_text_vectors)
+    show_result(orig,1,'./retrived_data/original_classification')
     response_space       = generate_vr_response(twitter_text_vectors)
     spiking_space        = generate_spiking_time(response_space) 
     np.savetxt("./retrived_data/input_time.txt",spiking_space,fmt='%s',delimiter=',',newline='\n')

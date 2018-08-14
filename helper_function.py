@@ -49,13 +49,14 @@ def print_stuff(name):
 # @Function: Help you to match the result with 
 #            the array index
 #
-def show_result(NN_list,show0save1=0):
+def show_result(NN_list,show0save1=0,save_path=0):
     
     params        = eval(open("settings.txt").read())
     twitter_file  = params['twitter_path']
     list_length   = params['LIST_LENGTH']
     data_amount   = params['DATA_AMOUNT']
-    save_path     = params['CLASSIFICATION']
+    if(save_path==0):
+        save_path     = params['CLASSIFICATION']
     twitter_array = []
 
     with open(twitter_file,'r') as f:

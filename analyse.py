@@ -7,9 +7,8 @@
 # @Mention: This version will not have verification step, 
 #           we just list the 5-nearest neighbor directly
 #
-
+from scipy.spatial.distance import cosine
 import numpy as np
-from calculate_cosine_distance import *
 import heapq
 import sys
 sys.dont_write_bytecode = True
@@ -20,6 +19,7 @@ KC_CELL_AMOUNT      = params['NUM_KC_CELLS']
 HASH_LENGTH         = params['HASH_LENGTH']
 DATA_AMOUNT         = params['DATA_AMOUNT']
 NN_LIST_LENGTH      = params['LIST_LENGTH']
+FULL_RATE           = params['FULL_SPIKING_RATE']
 
 #
 # @Function: first_part -> transfer raw spiking time into spiking rate
@@ -37,12 +37,13 @@ def get_count(spiking_space):
         begin_time = graph_index*TIME_SLOT
         end_time   = begin_time+TIME_SLOT
         for neuron_index in xrange(KC_CELL_AMOUNT): 
-            #spiking_record  = np.array(spiking_space[neuron_index])
             spiking_record  = spiking_space[neuron_index]
             count = len([element for element in spiking_record if element>begin_time and element<end_time])
+            #count = count * (1000 / TIME_SLOT)
+            #count = float(count) / FULL_RATE
             spiking_count[graph_index][neuron_index] = count
     
-    np.savetxt('./retrived_data/spiking_count.txt',spiking_count,fmt='%d',delimiter=',',newline='\n')
+    np.savetxt('./retrived_data/spiking_count.txt',spiking_count,fmt='%f',delimiter=',',newline='\n')
 
     simplified   =  np.zeros((DATA_AMOUNT,KC_CELL_AMOUNT))
         
@@ -50,7 +51,7 @@ def get_count(spiking_space):
         indices = np.argpartition(spiking_count[graph_index], -HASH_LENGTH)[-HASH_LENGTH:]
         simplified[graph_index][indices] = spiking_count[graph_index][indices]
 
-    np.savetxt('./retrived_data/simplified_count.txt',simplified,fmt='%d',delimiter=',',newline='\n')
+    np.savetxt('./retrived_data/simplified_count.txt',simplified,fmt='%f',delimiter=',',newline='\n')
 
     return simplified
 
@@ -70,7 +71,8 @@ def get_nearest_neighbor(simplified):
     for graph_a in xrange(DATA_AMOUNT):
         
         for graph_b in xrange(DATA_AMOUNT):
-            distance = np.linalg.norm((simplified[graph_a]-simplified[graph_b]),ord=2)
+            #distance = np.linalg.norm((simplified[graph_a]-simplified[graph_b]),ord=2)
+            distance = cosine(simplified[graph_a],simplified[graph_b])
             distance_list[graph_a].append((distance,graph_b))
         
         NN_list[graph_a]  =  heapq.nsmallest(NN_LIST_LENGTH,distance_list[graph_a])

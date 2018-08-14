@@ -16,16 +16,12 @@ from helper_function import print_stuff
 import sys
 sys.dont_write_bytecode = True
 
-mnistDir = "./data/mnist/mnist_test.txt"
 vrDir = "./GNG-optimum-VR-set.csv"
 
 def generate_vr_response(twitter_text_vectors):
     
     vr_space = np.loadtxt(vrDir,delimiter=',')
     feature_space = twitter_text_vectors
-
-    print_stuff(vr_space)
-    print_stuff(feature_space)
 
     vr_space_length = len(vr_space)
     feature_space_length = len(feature_space)
