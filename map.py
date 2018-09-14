@@ -83,52 +83,6 @@ def setupProjection_PN_KC(pn_population,kc_population):
     return pnkcProjection
 
 
-def readData():     # This function may be discarded since 
-                    # data preparation will be integrate in
-                    # file to avoid file reading overhead
-    spikeLists= []
-    c = open("InputSpikingTime.csv", "rb")
-    read = csv.reader(c)
-    for line in read:
-        spikeLists.append(map(float, line))
-    return spikeLists
-
-
-
-def retrieve_data(spikeData_original):      # This function may be discarded 
-                                            # use analyse.get_count instead
-    '''
-        This function obtain the original KC reaction to each graph
-        @Return_val[0] : original   -> DATA_AMOUNT * KC_REACTIONS_TO_THIS_GRAPH
-        @Return_val[1] : simplified -> DATA_AMOUNT * SIMPLIFIED_KC_REACTIONS
-    '''
-    original  = np.zeros((DATA_AMOUNT,NUM_KC_CELLS)) 
-    simplified= np.zeros((DATA_AMOUNT,NUM_KC_CELLS)) 
-
-    for graph_index in xrange(DATA_AMOUNT):
-        _begin_time = graph_index*TIME_SLOT
-        _end_time  = _begin_time+TIME_SLOT
-        for neuron_index in xrange(NUM_KC_CELLS):
-            graph_reaction = np.array(spikeData_original[neuron_index])
-            count= ((graph_reaction>_begin_time)and(graph_reaction<_end_time)).sum()
-            rate = float(count)/(float(TIME_SLOT)/1000)
-            original[graph_index][neuron_index] = rate
-
-        indices = np.argpartition(original[graph_index], 100)[:100]
-        simplified[graph_index, :][indices] = original[graph_index, :][indices]
- 
-    return [original,simplified]
-
-def save_data(src):   # This function may be discarded since all 
-                      # reading process maybe integred together
-                      # to avoid file reading time cost
-    LEN     = 2000
-    csvFile = open("src.csv", "w")
-    writer  = csv.writer(csvFile)
-
-    for neuron_index in xrange(LEN):
-        writer.writerow(src[neuron_index])
-    csvFile.close()
 
 #
 # @Mentioning: Twitter was tranformed into vectors of 100-dimensional 
